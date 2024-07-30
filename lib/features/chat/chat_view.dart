@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:generative_ai_gemini/features/chat/bloc/chat_bloc.dart';
@@ -34,6 +35,7 @@ class _ChatViewState extends State<ChatView> {
 
   @override
   Widget build(BuildContext context) {
+    final Size screenSize = MediaQuery.of(context).size;
     return BlocConsumer<ChatBloc, ChatState>(
       listener: (context, state) {
         if (state is MessageSendAndReciveState) {
@@ -46,30 +48,80 @@ class _ChatViewState extends State<ChatView> {
       builder: (context, state) => Scaffold(
         body: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: ListView.builder(
-              shrinkWrap: true,
-              controller: scrollController,
-              itemCount: context.read<ChatBloc>().chats.length,
-              itemBuilder: (context, index) {
-                if (context.read<ChatBloc>().chats[index].promptType ==
-                    PromptType.gemini) {
-                  return PromptByGemini(
-                      chat: context.read<ChatBloc>().chats[index]);
-                } else if (context.read<ChatBloc>().chats[index].promptType ==
-                    PromptType.user) {
-                  return PromptByUser(
-                    prompt: context.read<ChatBloc>().chats[index].prompt ?? "",
-                    onPressed: () {},
-                  );
-                } else if (context.read<ChatBloc>().chats[index].promptType ==
-                    PromptType.error) {
-                  return ResponseError(
-                    chat: context.read<ChatBloc>().chats[index],
-                  );
-                } else {
-                  return const ResponseLoading();
-                }
-              }),
+          child: context.read<ChatBloc>().chats.isEmpty
+              ? Center(
+                  child: SizedBox(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          robot_image,
+                          width: screenSize.width * 0.4,
+                          height: screenSize.height * 0.2,
+                        ),
+                        AnimatedTextKit(
+                          animatedTexts: [
+                            TypewriterAnimatedText(
+                              'Welocome to my new project',
+                              textStyle: const TextStyle(
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            TypewriterAnimatedText(
+                              'How can i help you',
+                              textStyle: const TextStyle(
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                             TypewriterAnimatedText(
+                              'send the context what you are looking for !',
+                              textStyle: const TextStyle(
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                          displayFullTextOnTap: true,
+                          stopPauseOnTap: true,
+                        )
+                      ],
+                    ),
+                  ),
+                )
+              : ListView.builder(
+                  shrinkWrap: true,
+                  controller: scrollController,
+                  itemCount: context.read<ChatBloc>().chats.length,
+                  itemBuilder: (context, index) {
+                    if (context.read<ChatBloc>().chats[index].promptType ==
+                        PromptType.gemini) {
+                      return PromptByGemini(
+                          chat: context.read<ChatBloc>().chats[index]);
+                    } else if (context
+                            .read<ChatBloc>()
+                            .chats[index]
+                            .promptType ==
+                        PromptType.user) {
+                      return PromptByUser(
+                        prompt:
+                            context.read<ChatBloc>().chats[index].prompt ?? "",
+                        onPressed: () {},
+                      );
+                    } else if (context
+                            .read<ChatBloc>()
+                            .chats[index]
+                            .promptType ==
+                        PromptType.error) {
+                      return ResponseError(
+                        chat: context.read<ChatBloc>().chats[index],
+                      );
+                    } else {
+                      return const ResponseLoading();
+                    }
+                  }),
         ),
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -77,6 +129,7 @@ class _ChatViewState extends State<ChatView> {
             maxLines: 5,
             minLines: 1,
             decoration: InputDecoration(
+                hintText: "Enter a prompt here",
                 border:
                     OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
                 prefixIcon: IconButton(

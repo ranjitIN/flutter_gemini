@@ -1,6 +1,6 @@
 # generative_ai_gemini
 
-A new Flutter project.
+A Genereative AI Project Using Gemini
 
 ## Getting Started
 

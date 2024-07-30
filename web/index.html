@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <!--
     If you are serving your web app in a path other than the root, change the
@@ -18,7 +19,7 @@
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+  <meta name="description" content="A Genereative AI Project Developed By ranjitIn.">
 
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -27,12 +28,68 @@
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.ico"/>
+  <link rel="icon" type="image/png" href="favicon.ico" />
 
   <title>generative_ai_gemini</title>
   <link rel="manifest" href="manifest.json">
+  <style>
+    .loader {
+      width: 60px;
+      aspect-ratio: 2;
+      --_g: no-repeat radial-gradient(circle closest-side, #000 90%, #0000);
+      background:
+        var(--_g) 0% 50%,
+        var(--_g) 50% 50%,
+        var(--_g) 100% 50%;
+      background-size: calc(100%/3) 50%;
+      animation: l3 1s infinite linear;
+    }
+
+    @keyframes l3 {
+      20% {
+        background-position: 0% 0%, 50% 50%, 100% 50%
+      }
+
+      40% {
+        background-position: 0% 100%, 50% 0%, 100% 50%
+      }
+
+      60% {
+        background-position: 0% 50%, 50% 100%, 100% 0%
+      }
+
+      80% {
+        background-position: 0% 50%, 50% 50%, 100% 100%
+      }
+    }
+
+    .container {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      /* Default Axis is X*/
+      justify-content: center;
+      /* Main Axis */
+      align-items: center;
+      /* Cross Axis */
+    }
+
+    .indicator {
+      width: 20vw;
+    }
+  </style>
 </head>
-<body>
+
+<body style="overflow: hidden">
+
+  <div id="loading_indicator" class="container">
+    <img class="indicator" src="icons/Icon-192.png" />
+    <div class="loader"></div>
+  </div>
+
+
   <script src="flutter_bootstrap.js" async></script>
 </body>
+
 </html>
