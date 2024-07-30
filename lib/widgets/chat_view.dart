@@ -46,8 +46,9 @@ class PromptByGemini extends StatelessWidget {
                     child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: chat.generated
-                            ? Markdown(
+                            ? Markdown(padding: EdgeInsets.zero,
                                 shrinkWrap: true,
+                                physics: const ScrollPhysics(),
                                 data: chat.prompt ?? "",
                                 builders: {
                                   'code': CodeElementBuilder(context: context),
@@ -123,9 +124,7 @@ class PromptByUser extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(
-            width: 6.0,
-          ),
+         
           IconButton(
             hoverColor: Colors.grey,
             onPressed: () {},

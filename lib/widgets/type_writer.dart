@@ -66,9 +66,11 @@ class CustomMarkDownTypewriterAnimatedText extends AnimatedText {
 
   @override
   Widget completeText(BuildContext context) => Markdown(
+    padding: EdgeInsets.zero,
         selectable: true,
         shrinkWrap: true,
         data: text,
+        physics: const ScrollPhysics(),
         builders: {
           'code': CodeElementBuilder(context: context),
         },
@@ -118,8 +120,10 @@ class CustomMarkDownTypewriterAnimatedText extends AnimatedText {
     // );
 
     return Markdown(
+      padding: EdgeInsets.zero,
       shrinkWrap: true,
       selectable: true,
+      physics: const ScrollPhysics(),
       data: visibleString,
       builders: {
         'code': CodeElementBuilder(context: context),
