@@ -8,13 +8,28 @@ class SendMessageEvent extends ChatEvent {
   SendMessageEvent({required this.prompt});
 }
 
-class ReciveMessageEvent extends ChatEvent{
+class ReciveMessageEvent extends ChatEvent {
   final String response;
   ReciveMessageEvent({required this.response});
 }
 
-class ResponseLoadingEvent extends ChatEvent{
+class EditMessageEvent extends ChatEvent {
+  final Chat chat;
+  EditMessageEvent({required this.chat});
+}
+
+class EditCancelEvnet extends ChatEvent {
+  final Chat chat;
+  EditCancelEvnet({required this.chat});
+}
+
+class EditSubmitEvent extends ChatEvent {
+  final Chat chat;
+  EditSubmitEvent({required this.chat});
+}
+
+class ResponseLoadingEvent extends ChatEvent {
   final bool loading;
   final Chat chat;
-  ResponseLoadingEvent({required this.chat,required this.loading});
+  ResponseLoadingEvent({required this.chat, required this.loading});
 }

@@ -52,10 +52,9 @@ class _ChatViewState extends State<ChatView> {
       listener: (context, state) {
         if (state is MessageSendAndReciveState) {
           if (scrollController.hasClients) {
-            scrollController.animateTo(
-                scrollController.position.maxScrollExtent,
-                duration: const Duration(milliseconds: 200),
-                curve: Curves.bounceIn);
+            scrollController.jumpTo(
+              scrollController.position.maxScrollExtent,
+            );
           }
         } else {}
       },
@@ -142,7 +141,12 @@ class _ChatViewState extends State<ChatView> {
                                         .chats[index]
                                         .prompt ??
                                     "",
-                                onPressed: () {},
+                                onPressed: () {
+                                  chatBloc?.add(EditMessageEvent(
+                                      chat: context
+                                          .read<ChatBloc>()
+                                          .chats[index]));
+                                },
                               );
                             } else if (context
                                     .read<ChatBloc>()
@@ -151,6 +155,19 @@ class _ChatViewState extends State<ChatView> {
                                 PromptType.error) {
                               return ResponseError(
                                 chat: context.read<ChatBloc>().chats[index],
+                              );
+                            } else if (context
+                                    .read<ChatBloc>()
+                                    .chats[index]
+                                    .promptType ==
+                                PromptType.editable) {
+                              return EditablePrompt(
+                                chat: context.read<ChatBloc>().chats[index],
+                                textController: TextEditingController(
+                                    text: context
+                                        .read<ChatBloc>()
+                                        .chats[index]
+                                        .prompt),
                               );
                             } else {
                               return const ResponseLoading();

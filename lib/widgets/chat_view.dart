@@ -130,10 +130,82 @@ class PromptByUser extends StatelessWidget {
           IconButton(
             padding: EdgeInsets.zero,
             hoverColor: Colors.grey,
-            onPressed: () {},
+            onPressed: onPressed,
             icon: const Icon(Icons.edit),
             iconSize: 16,
           )
+        ],
+      ),
+    );
+  }
+}
+
+// typedef OnSubmitCallback = void Function(String val);
+
+class EditablePrompt extends StatelessWidget {
+  final Chat chat;
+  final TextEditingController textController;
+
+  const EditablePrompt(
+      {super.key, required this.chat, required this.textController});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 3.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Flexible(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width * 0.7),
+              child: Card(
+                child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        TextField(
+                          maxLines: 5,
+                          minLines: 1,
+                          decoration:
+                              const InputDecoration(border: InputBorder.none),
+                          controller: textController,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 6.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              TextButton(
+                                  onPressed: () {
+                                    BlocProvider.of<ChatBloc>(context)
+                                        .add(EditCancelEvnet(chat: chat));
+                                  },
+                                  child: const Text("cancel")),
+                              const SizedBox(width: 10),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      foregroundColor: Colors.white,
+                                      backgroundColor: Colors.grey[600]),
+                                  onPressed: () {
+                                    Chat newChat = Chat(
+                                        id: chat.id,
+                                        promptType: PromptType.user,
+                                        prompt: textController.text);
+
+                                    BlocProvider.of<ChatBloc>(context)
+                                        .add(EditSubmitEvent(chat: newChat));
+                                  },
+                                  child: const Text("submit")),
+                            ],
+                          ),
+                        )
+                      ],
+                    )),
+              ),
+            ),
+          ),
         ],
       ),
     );

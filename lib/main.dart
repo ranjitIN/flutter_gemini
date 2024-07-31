@@ -2,7 +2,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:generative_ai_gemini/features/chat/bloc/chat_bloc.dart';
-import 'package:generative_ai_gemini/features/chat/chat_view.dart';
+import 'package:generative_ai_gemini/features/chat/chat_view_screen.dart';
 import 'package:generative_ai_gemini/utils/const_asset.dart';
 import 'package:generative_ai_gemini/widgets/type_writer.dart';
 
@@ -16,9 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [
-        BlocProvider<ChatBloc>(create: (context) => ChatBloc())
-      ],
+      providers: [BlocProvider<ChatBloc>(create: (context) => ChatBloc())],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(

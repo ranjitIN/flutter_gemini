@@ -13,10 +13,10 @@ class Chat {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is Chat && runtimeType == other.runtimeType && id == other.id;
-  
+
   @override
   // TODO: implement hashCode
   int get hashCode => id.hashCode;
 }
 
-enum PromptType { gemini, user, loading , error, image}
+enum PromptType { gemini, user, loading, error, image, editable }
