@@ -21,8 +21,11 @@ class CustomMarkDownTypewriterAnimatedText extends AnimatedText {
   /// Cursor text. Defaults to underscore.
   final String cursor;
 
+  VoidCallback? onAnimating;
+
   CustomMarkDownTypewriterAnimatedText(
     String text, {
+    this.onAnimating,
     TextAlign textAlign = TextAlign.start,
     TextStyle? textStyle,
     this.speed = const Duration(milliseconds: 30),
@@ -49,24 +52,9 @@ class CustomMarkDownTypewriterAnimatedText extends AnimatedText {
     ).animate(controller);
   }
 
-  // @override
-  // Widget completeText(BuildContext context) => RichText(
-  //       text: TextSpan(
-  //         children: [
-  //           TextSpan(text: text),
-  //           TextSpan(
-  //             text: cursor,
-  //             style: const TextStyle(color: Colors.transparent),
-  //           )
-  //         ],
-  //         style: DefaultTextStyle.of(context).style.merge(textStyle),
-  //       ),
-  //       textAlign: textAlign,
-  //     );
-
   @override
   Widget completeText(BuildContext context) => Markdown(
-    padding: EdgeInsets.zero,
+        padding: EdgeInsets.zero,
         selectable: true,
         shrinkWrap: true,
         data: text,
@@ -104,20 +92,7 @@ class CustomMarkDownTypewriterAnimatedText extends AnimatedText {
       visibleString = textCharacters.take(typewriterValue).toString();
     }
 
-    // return RichText(
-    //   text: TextSpan(
-    //     children: [
-    //       TextSpan(text: visibleString),
-    //       TextSpan(
-    //         text: cursor,
-    //         style:
-    //             showCursor ? null : const TextStyle(color: Colors.transparent),
-    //       )
-    //     ],
-    //     style: DefaultTextStyle.of(context).style.merge(textStyle),
-    //   ),
-    //   textAlign: textAlign,
-    // );
+    onAnimating!();
 
     return Markdown(
       padding: EdgeInsets.zero,

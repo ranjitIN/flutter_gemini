@@ -22,7 +22,7 @@ class _ChatViewState extends State<ChatView> {
     // TODO: implement initState
     super.initState();
     chatBloc = BlocProvider.of<ChatBloc>(context);
-
+    scrollController.addListener(_scrollListener);
     // scrollController.addListener(() {
     //   if (scrollController.offset >=
     //       scrollController.position.maxScrollExtent) {
@@ -33,17 +33,30 @@ class _ChatViewState extends State<ChatView> {
     // });
   }
 
+  void _scrollListener() {
+    if (scrollController.hasClients &&
+        scrollController.position.pixels ==
+            scrollController.position.maxScrollExtent) {
+      scrollController.animateTo(scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 200), curve: Curves.bounceIn);
+      // _shouldAutoscroll = true;
+    } else {
+      // _shouldAutoscroll = false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
     return BlocConsumer<ChatBloc, ChatState>(
       listener: (context, state) {
         if (state is MessageSendAndReciveState) {
-         if(scrollController.hasClients){
-           scrollController.animateTo(scrollController.position.maxScrollExtent,
-              duration: const Duration(milliseconds: 200),
-              curve: Curves.bounceIn);
-         }
+          if (scrollController.hasClients) {
+            scrollController.animateTo(
+                scrollController.position.maxScrollExtent,
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.bounceIn);
+          }
         } else {}
       },
       bloc: chatBloc,
@@ -54,7 +67,7 @@ class _ChatViewState extends State<ChatView> {
             children: [
               context.read<ChatBloc>().chats.isEmpty
                   ? Expanded(
-                    child: Center(
+                      child: Center(
                         child: SizedBox(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -96,41 +109,54 @@ class _ChatViewState extends State<ChatView> {
                           ),
                         ),
                       ),
-                  )
+                    )
                   : Expanded(
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        controller: scrollController,
-                        itemCount: context.read<ChatBloc>().chats.length,
-                        itemBuilder: (context, index) {
-                          if (context.read<ChatBloc>().chats[index].promptType ==
-                              PromptType.gemini) {
-                            return PromptByGemini(
-                                chat: context.read<ChatBloc>().chats[index]);
-                          } else if (context
-                                  .read<ChatBloc>()
-                                  .chats[index]
-                                  .promptType ==
-                              PromptType.user) {
-                            return PromptByUser(
-                              prompt:
-                                  context.read<ChatBloc>().chats[index].prompt ??
-                                      "",
-                              onPressed: () {},
-                            );
-                          } else if (context
-                                  .read<ChatBloc>()
-                                  .chats[index]
-                                  .promptType ==
-                              PromptType.error) {
-                            return ResponseError(
-                              chat: context.read<ChatBloc>().chats[index],
-                            );
-                          } else {
-                            return const ResponseLoading();
-                          }
-                        }),
-                  ),
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          controller: scrollController,
+                          itemCount: context.read<ChatBloc>().chats.length,
+                          itemBuilder: (context, index) {
+                            if (context
+                                    .read<ChatBloc>()
+                                    .chats[index]
+                                    .promptType ==
+                                PromptType.gemini) {
+                              return PromptByGemini(
+                                  onAnimating: () {
+                                    scrollController.animateTo(
+                                        scrollController
+                                            .position.maxScrollExtent,
+                                        duration:
+                                            const Duration(milliseconds: 200),
+                                        curve: Curves.bounceIn);
+                                  },
+                                  chat: context.read<ChatBloc>().chats[index]);
+                            } else if (context
+                                    .read<ChatBloc>()
+                                    .chats[index]
+                                    .promptType ==
+                                PromptType.user) {
+                              return PromptByUser(
+                                prompt: context
+                                        .read<ChatBloc>()
+                                        .chats[index]
+                                        .prompt ??
+                                    "",
+                                onPressed: () {},
+                              );
+                            } else if (context
+                                    .read<ChatBloc>()
+                                    .chats[index]
+                                    .promptType ==
+                                PromptType.error) {
+                              return ResponseError(
+                                chat: context.read<ChatBloc>().chats[index],
+                              );
+                            } else {
+                              return const ResponseLoading();
+                            }
+                          }),
+                    ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(

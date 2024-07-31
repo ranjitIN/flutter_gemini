@@ -11,7 +11,8 @@ import 'package:generative_ai_gemini/widgets/type_writer.dart';
 
 class PromptByGemini extends StatelessWidget {
   final Chat chat;
-  const PromptByGemini({super.key, required this.chat});
+  final VoidCallback? onAnimating;
+  const PromptByGemini({super.key, required this.chat, this.onAnimating});
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +47,8 @@ class PromptByGemini extends StatelessWidget {
                     child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: chat.generated
-                            ? Markdown(padding: EdgeInsets.zero,
+                            ? Markdown(
+                                padding: EdgeInsets.zero,
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
                                 data: chat.prompt ?? "",
@@ -63,6 +65,7 @@ class PromptByGemini extends StatelessWidget {
                                 isRepeatingAnimation: false,
                                 animatedTexts: [
                                   CustomMarkDownTypewriterAnimatedText(
+                                      onAnimating: onAnimating,
                                       chat.prompt ?? "")
                                 ],
                               )),
@@ -123,9 +126,9 @@ class PromptByUser extends StatelessWidget {
                 ),
               ),
             ),
-          ), 
+          ),
           IconButton(
-            padding: EdgeInsets.zero ,
+            padding: EdgeInsets.zero,
             hoverColor: Colors.grey,
             onPressed: () {},
             icon: const Icon(Icons.edit),

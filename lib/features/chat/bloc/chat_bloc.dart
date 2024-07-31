@@ -14,10 +14,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   List<Chat> chats = [];
   bool loading = false;
   GenerativeModel? model = GenerativeModel(
-      model: 'gemini-1.5-flash-latest',
-      // model: 'gemini-1.5-pro',
-      apiKey: Env.geminiApiKey,
-      systemInstruction:Content.system("You are Rex, an Ai  developed by Mr. ranjit that lives on Europa, one of Jupiter's moon"),
+    model: 'gemini-1.5-flash-latest',
+    // model: 'gemini-1.5-pro',
+    apiKey: Env.geminiApiKey,
+    systemInstruction: Content.system(
+        "You are Rex, an Ai  developed by Mr. ranjit that lives on server, one of servers used by them"),
   );
 
   ChatBloc() : super(ChatInitial()) {
@@ -31,11 +32,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   FutureOr<void> onResponseLoading(
       ResponseLoadingEvent event, Emitter<ChatState> emit) {
-        loading = false;
-        emit(ResponseLoadingState(loading: loading));
-        int index = chats.indexOf(event.chat);
-        chats[index].generated = true;
-        emit(MessageSendAndReciveState(chats: chats));
+    loading = false;
+    emit(ResponseLoadingState(loading: loading));
+    int index = chats.indexOf(event.chat);
+    chats[index].generated = true;
+    emit(MessageSendAndReciveState(chats: chats));
     // state.chats.add(Chat(promptType: PromptType.gemini, prompt: event.response));
     // print(state.loading);
     // state.loading = event.loading;
@@ -52,20 +53,32 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   FutureOr<void> sendMessage(
       SendMessageEvent event, Emitter<ChatState> emit) async {
     try {
-      chats.add(Chat(id:DateTime.now().microsecondsSinceEpoch.toString(),promptType: PromptType.user, prompt: event.prompt));
-      chats.add(Chat(id:DateTime.now().microsecondsSinceEpoch.toString(),promptType: PromptType.loading, prompt: ""));
+      chats.add(Chat(
+          id: DateTime.now().microsecondsSinceEpoch.toString(),
+          promptType: PromptType.user,
+          prompt: event.prompt));
+      chats.add(Chat(
+          id: DateTime.now().microsecondsSinceEpoch.toString(),
+          promptType: PromptType.loading,
+          prompt: ""));
       emit(MessageSendAndReciveState(chats: chats));
       loading = true;
       emit(ResponseLoadingState(loading: loading));
       final content = [Content.text(event.prompt)];
       final response = await model?.generateContent(content);
       chats.removeLast();
-      chats.add(Chat(id:DateTime.now().microsecondsSinceEpoch.toString(),promptType: PromptType.gemini, prompt: response?.text ?? ""));
+      chats.add(Chat(
+          id: DateTime.now().microsecondsSinceEpoch.toString(),
+          promptType: PromptType.gemini,
+          prompt: response?.text ?? ""));
       emit(MessageSendAndReciveState(chats: chats));
     } catch (error) {
       chats.removeLast();
       loading = false;
-      chats.add(Chat(id:DateTime.now().microsecondsSinceEpoch.toString(),promptType: PromptType.error, prompt: error.toString()));
+      chats.add(Chat(
+          id: DateTime.now().microsecondsSinceEpoch.toString(),
+          promptType: PromptType.error,
+          prompt: error.toString()));
       emit(MessageSendAndReciveState(chats: chats));
       emit(ResponseLoadingState(loading: loading));
     }
