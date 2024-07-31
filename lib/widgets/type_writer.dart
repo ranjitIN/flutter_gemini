@@ -70,7 +70,7 @@ class CustomMarkDownTypewriterAnimatedText extends AnimatedText {
         selectable: true,
         shrinkWrap: true,
         data: text,
-        physics: const ScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         builders: {
           'code': CodeElementBuilder(context: context),
         },
@@ -123,7 +123,7 @@ class CustomMarkDownTypewriterAnimatedText extends AnimatedText {
       padding: EdgeInsets.zero,
       shrinkWrap: true,
       selectable: true,
-      physics: const ScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       data: visibleString,
       builders: {
         'code': CodeElementBuilder(context: context),

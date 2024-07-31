@@ -15,7 +15,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   bool loading = false;
   GenerativeModel? model = GenerativeModel(
       model: 'gemini-1.5-flash-latest',
+      // model: 'gemini-1.5-pro',
       apiKey: Env.geminiApiKey,
+      systemInstruction:Content.system("You are Rex, an Ai  developed by Mr. ranjit that lives on Europa, one of Jupiter's moon"),
   );
 
   ChatBloc() : super(ChatInitial()) {
