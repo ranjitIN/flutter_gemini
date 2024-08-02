@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:generative_ai_gemini/features/chat/bloc/chat_bloc.dart';
 import 'package:generative_ai_gemini/features/chat/chat_view_screen.dart';
+import 'package:generative_ai_gemini/features/auth/login_screen.dart';
 import 'package:generative_ai_gemini/utils/const_asset.dart';
 import 'package:generative_ai_gemini/widgets/type_writer.dart';
 
@@ -20,10 +21,11 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.grey),
           useMaterial3: true,
         ),
-        home: const ChatView(),
+        home: const LoginScreen(),
+        // home: const ChatView(),
       ),
     );
   }

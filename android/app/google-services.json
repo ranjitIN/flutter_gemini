@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "681172329982",
+    "project_id": "generative-rex",
+    "storage_bucket": "generative-rex.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:681172329982:android:276cd28f4144668ae44caf",
+        "android_client_info": {
+          "package_name": "com.ranjitIN.generative_ai_rex"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1BezvdIGeJHcpP20OxQiVxbJQxUGElxc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

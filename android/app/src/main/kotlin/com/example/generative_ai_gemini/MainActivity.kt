@@ -1,4 +1,4 @@
-package com.example.generative_ai_gemini
+package com.ranjitIN.generative_ai_rex
 
 import io.flutter.embedding.android.FlutterActivity
 

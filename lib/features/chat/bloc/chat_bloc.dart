@@ -3,7 +3,6 @@ import 'package:bloc/bloc.dart';
 import 'package:generative_ai_gemini/model/chat.dart';
 import 'package:generative_ai_gemini/model/env.dart';
 import 'package:generative_ai_gemini/utils/const_asset.dart';
-import 'package:generative_ai_gemini/widgets/chat_view.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:meta/meta.dart';
 
@@ -17,8 +16,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     model: 'gemini-1.5-flash-latest',
     // model: 'gemini-1.5-pro',
     apiKey: Env.geminiApiKey,
-    systemInstruction: Content.system(
-        "You are Rex, an Ai  developed by Mr. ranjit that lives on server, one of servers used by them"),
+    systemInstruction: Content.system(modelInstruction),
   );
 
   ChatBloc() : super(ChatInitial()) {
